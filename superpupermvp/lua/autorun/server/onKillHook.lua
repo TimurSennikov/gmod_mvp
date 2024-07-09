@@ -11,9 +11,9 @@ function Crown:Setup()
 
     self.crown:SetModel("models/balloons/balloon_star.mdl")
 
-    self.crown:SetPersistent(true)
-
     self.crown:SetCollisionGroup(1)
+
+    self.crown:Fire("SetParentAttachmentMaintainOffset", "eyes")
 
     self.crown:Spawn()
 end
@@ -24,6 +24,8 @@ function Crown:DeleteMVP()
 
         self.crown:SetParent(nil)
         self.crown:SetPos(NULLVEC)
+
+        isThereMVP = false
     end  
 end
 
@@ -38,17 +40,6 @@ function Crown:BaBaX(ply)
     can:Fire("break")
 end
 
-function Crown:BaBaXWaterMelon(ply)
-    local watermelon = ents.Create()
-
-    watermelon:SetModel()
-    watermelon:SetPos(ply:GetPos() + Vector(0, 0, 100))
-
-    watermelon:Spawn()
-
-    watermelon:Fire("break")
-end
-
 function Crown:ChangeMVP(ply)
     if not IsValid(self.crown) then
         self:Setup()
@@ -57,8 +48,7 @@ function Crown:ChangeMVP(ply)
     self.MVP = ply
 
     self.crown:SetParent(ply)
-    self.crown:Fire("SetParentAttachmentMaintainOffset", "eyes")
-    self.crown:SetLocalPos(Vector(0, 0, 100))
+    self.crown:SetLocalPos(Vector(0, 0, 80))
 
     PrintMessage(HUD_PRINTTALK, ply:Name() .. " is the new King!")
 end
