@@ -58,7 +58,9 @@ function OnKill(victim, inflictor, attacker)
             Crown:ExplodeNextToPlayer(victim)
             Crown:BreakWatermelonNextToPlayer(victim)
 
-            Crown:ChangeMVP(attacker)
+            if IsValid(attacker) and attacker:IsPlayer then
+                Crown:ChangeMVP(attacker)
+            end
         end
     end
 end
