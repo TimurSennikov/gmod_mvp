@@ -81,7 +81,7 @@ function OnPlayerSay(ply, text)
         Crown:Setup()
 
         ply:PrintMessage(HUD_PRINTTALK, "You entered build mode, MVP star will be deleted :/")
-    elseif string.Explode('"', text)[1] == "!setmvp " then
+    elseif string.Explode('"', text)[1] == "!setmvp " and ply:IsAdmin() then
         local expolodedString = string.Explode('"', text)
 
         for k, v in ipairs(player.GetAll()) do
