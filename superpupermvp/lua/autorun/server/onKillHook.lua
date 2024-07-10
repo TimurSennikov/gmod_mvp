@@ -62,16 +62,7 @@ function OnKill(victim, inflictor, attacker)
                 Crown:BreakWatermelonNextToPlayer(victim)
 
                 Crown:ChangeMVP(attacker)
-            else
-                Crown:ChangeMVP(nil)
-                PrintMessage(HUD_PRINTTALK, "MVP is dead, be the first to take the crown!")
             end
-        end
-    else
-        if victim == Crown.MVP and victim == attacker == true then
-            Crown:Setup()
-
-            PrintMessage(HUD_PRINTTALK, "MVP preferred to DIE, take his crown!")
         end
     end
 end
