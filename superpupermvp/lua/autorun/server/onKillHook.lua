@@ -53,10 +53,10 @@ function Crown:BreakWatermelonNextToPlayer(ply)
 end
 
 function OnKill(victim, inflictor, attacker)
-    if not Crown.MVP and not victim == attacker then
+    if not Crown.MVP and victim == attacker == false then
         Crown:ChangeMVP(attacker)
     else
-        if victim == Crown.MVP and not victim == attacker then
+        if victim == Crown.MVP then
             Crown:ExplodeNextToPlayer(victim)
             Crown:BreakWatermelonNextToPlayer(victim)
 
