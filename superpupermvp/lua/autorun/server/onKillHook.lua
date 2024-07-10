@@ -55,17 +55,23 @@ end
 function OnKill(victim, inflictor, attacker)
     if not Crown.MVP and victim == attacker == false then
         Crown:ChangeMVP(attacker)
-    else
+    elseif victim == attacker == false then
         if victim == Crown.MVP then
-            Crown:ExplodeNextToPlayer(victim)
-            Crown:BreakWatermelonNextToPlayer(victim)
-
             if IsValid(attacker) and attacker:IsPlayer() then
+                Crown:ExplodeNextToPlayer(victim)
+                Crown:BreakWatermelonNextToPlayer(victim)
+
                 Crown:ChangeMVP(attacker)
             else
                 Crown:ChangeMVP(nil)
                 PrintMessage(HUD_PRINTTALK, "MVP is dead, be the first to take the crown!")
             end
+        end
+    else
+        if victim == Crown.MVP and victim == attacker == true then
+            Crown:Setup()
+
+            PrintMessage(HUD_PRINTTALK, "MVP preferred to DIE, take his crown!")
         end
     end
 end
@@ -84,7 +90,6 @@ function OnPlayerSay(ply, text)
             ply:PrintMessage(HUD_PRINTTALK, "There is no MVP now, be first to take to crown!")
         end
     elseif text == "!build" and ply == Crown.MVP then
-        Crown.MVP = nil
         Crown:Setup()
 
         ply:PrintMessage(HUD_PRINTTALK, "You entered build mode, MVP star will be deleted :/")
