@@ -72,7 +72,7 @@ end
 
 function OnPlayerDisconnect(ply)
     if ply == Crown.MVP then
-        Crown.MVP = nil
+        Crown:ChangeMVP(nil)
     end
 end
 
