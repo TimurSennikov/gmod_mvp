@@ -17,14 +17,16 @@ end
 function Crown:ChangeMVP(ply)
     self:Setup()
 
-    self.MVP = ply
+    if IsValid(ply) and ply:IsPlayer() then
+        self.MVP = ply
 
-    self.crown:SetParent(ply)
-    self.crown:Fire("SetParentAttachmentMaintainOffset", "eyes")
-    self.crown:SetLocalPos(Vector(-15,-15,90))
-    self.crown:SetAngles(ply:GetAngles())
+        self.crown:SetParent(ply)
+        self.crown:Fire("SetParentAttachmentMaintainOffset", "eyes")
+        self.crown:SetLocalPos(Vector(-15,-15,90))
+        self.crown:SetAngles(ply:GetAngles())
 
-    PrintMessage(HUD_PRINTTALK, ply:Name() .. " is the new King!")
+        PrintMessage(HUD_PRINTTALK, ply:Name() .. " is the new King!")
+    end
 end
 
 function Crown:ExplodeNextToPlayer(ply)
@@ -51,15 +53,18 @@ function Crown:BreakWatermelonNextToPlayer(ply)
 end
 
 function OnKill(victim, inflictor, attacker)
-    if not Crown.MVP then
+    if not Crown.MVP and not victim == attacker then
         Crown:ChangeMVP(attacker)
     else
-        if victim == Crown.MVP then
+        if victim == Crown.MVP and not victim == attacker then
             Crown:ExplodeNextToPlayer(victim)
             Crown:BreakWatermelonNextToPlayer(victim)
 
             if IsValid(attacker) and attacker:IsPlayer() then
                 Crown:ChangeMVP(attacker)
+            else
+                Crown:ChangeMVP(nil)
+                PrintMessage(HUD_PRINTTALK, "MVP is dead, be the first to take the crown!")
             end
         end
     end
@@ -84,13 +89,25 @@ function OnPlayerSay(ply, text)
 
         ply:PrintMessage(HUD_PRINTTALK, "You entered build mode, MVP star will be deleted :/")
     elseif string.Explode('"', text)[1] == "!setmvp " and ply:IsAdmin() then
-        local expolodedString = string.Explode('"', text)
+        local explodedString = string.Explode('"', text)
 
-        for k, v in ipairs(player.GetAll()) do
-            if v:Name() == expolodedString[2] then
-                Crown.MVP = v
+        if explodedString[2] == "noone" then
+            Crown.MVP = nil
+            Crown:Setup()
+        else
+            local playerFound = false
+            for k, v in ipairs(player.GetAll()) do
+                if v:Name() == explodedString[2] then
+                    Crown.MVP = v
 
-                Crown:ChangeMVP(v)
+                    Crown:ChangeMVP(v)
+
+                    playerFound = true
+                end
+            end
+
+            if not playerFound then
+                ply:PrintMessage(HUD_PRINTTALK, "Can`t find player on server!")
             end
         end
     end
