@@ -40,18 +40,6 @@ function Crown:ExplodeNextToPlayer(ply)
     can:Fire("break")
 end
 
-function Crown:BreakWatermelonNextToPlayer(ply)
-    local watermelon = ents.Create("prop_dynamic")
-
-    watermelon:SetModel("models/props_junk/watermelon01.mdl")
-    watermelon:SetParent(ply)
-    watermelon:SetLocalPos(Vector(0,0,50))
-
-    watermelon:Spawn()
-
-    watermelon:Fire("break")
-end
-
 function OnKill(victim, inflictor, attacker)
     if not Crown.MVP and victim == attacker == false then
         Crown:ChangeMVP(attacker)
@@ -59,7 +47,6 @@ function OnKill(victim, inflictor, attacker)
         if victim == Crown.MVP then
             if IsValid(attacker) and attacker:IsPlayer() then
                 Crown:ExplodeNextToPlayer(victim)
-                Crown:BreakWatermelonNextToPlayer(victim)
 
                 Crown:ChangeMVP(attacker)
             end
